@@ -1,0 +1,39 @@
+version: "3" 
+services:
+  web_blackandorange:
+    image: alexrogna/blackandorange_web:prod
+    expose:
+      - 3000
+    env_file:
+      - .env/production/database_blackandorange
+      - .env/production/web_blackandorange
+    environment:
+      - VIRTUAL_HOST=blackandorange.alexrogna.com
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=blackandorange.alexrogna.com
+    networks:
+      - proxy
+    restart: always
+
+  database_blackandorange:
+    image: postgres
+    env_file:
+      - .env/production/database_blackandorange
+    volumes:
+      - db_data_blackandorange:/var/lib/postgresql/data
+    networks:
+      - proxy
+    restart: always
+    
+  db-migrator_blackandorange:
+    image: alexrogna/blackandorange_web:prod
+    command: ["./wait-for", "--timeout=300", "database_blackandorange:5432", "--", "bin/rails", "db:create" , "db:migrate"]
+    env_file:
+      - .env/production/database_blackandorange
+      - .env/production/web_blackandorange
+    networks:
+      - proxy
+volumes:
+  db_data_blackandorange:
+networks:
+  proxy:

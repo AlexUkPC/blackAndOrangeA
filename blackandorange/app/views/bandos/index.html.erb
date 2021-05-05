@@ -1,0 +1,66 @@
+<%= render 'hero' %>
+<section class="section">
+  <div class="bandos">
+    <% @bandos.each do |bando| %>
+      <div class="bando-grid-item">
+        <div class="bando-wrapper">
+          <%= link_to bando, class:"bando" do %>
+              <%= bando.user_bando.blank? ? image_tag("") : image_tag(bando.user_bando_url) %>
+              <div class="bando-data">
+                <h3 class="bando-title"><%= bando.title %></h3>
+                <div class="bando-description"><%= truncate(bando.description, length: 60) %></div>
+                <div class="bando-time">
+                  <%= time_ago_in_words(bando.created_at) %> ago
+                </div>
+              </div>
+          <% end %>
+          <nav class="level bando-analytics">
+            <div class="level-left">
+
+            </div>
+            <div class="level-right">
+              <div class="level-item views data">
+                <%= link_to bando do%>
+                  <span class="icon"><i class="fa fa-eye"></i></span>
+                    <%= bando.impressionist_count %>
+                <% end %>
+              </div>
+              <div class="level-item comments data">
+                <%= link_to bando do%>
+                  <span class="icon"><i class="fa fa-comment"></i></span>
+                    <%= bando.comments.count %>
+                <% end %>
+              </div>
+              <div class="level-item likes">
+                <% if user_signed_in? %>
+                    <% if current_user.liked? bando %>
+                        <%= link_to unlike_bando_path(bando), method: :put, class: "unlike_bando" do %>
+                          <span class="icon"><i class="fa fa-heart has-text-primary"></i></span>
+                          <span class="vote_count"><%= bando.get_likes.size %></span>
+                        <% end %>
+                    <% else%>
+                        <%= link_to like_bando_path(bando), method: :put, class: "like_bando" do %>
+                            <span class="icon"><i class="fa fa-heart"></i></span>
+                            <span class="vote_count"><%= bando.get_likes.size %></span>
+                        <% end %>
+                    <% end %>
+                <% else %>
+                    <%= link_to like_bando_path(bando), method: :put, class: "like_bando" do %>
+                        <span class="icon"><i class="fa fa-heart"></i></span>
+                        <span class="vote_count"><%= bando.get_likes.size %></span>
+                    <% end %>
+                <% end %>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="user-data">
+          <div class="user-thumb">
+            <%= gravatar_image_tag(bando.user.email.gsub('spam', 'mdeering'),alt: bando.user.name, :gravatar => { :secure => true, :size => 20 , :d => "mp"}); %>
+          </div>
+          <div class="user-name"><%= bando.user.name %></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
