@@ -73,3 +73,8 @@
    display: block !important;
  }
  .file-input { visibility: hidden; }
+ .navbar-brand{
+    a.navbar-item:hover{
+      background-color: transparent !important;
+    }
+ }
