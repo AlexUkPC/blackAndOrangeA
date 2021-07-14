@@ -78,6 +78,6 @@ class BandosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def bando_params
-      params.require(:bando).permit(:title, :description, :user_bando)
+      params.require(:bando).permit(:title, :description, :user_bando, :created_at)
     end
 end
