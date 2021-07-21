@@ -9,6 +9,7 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' %>
+    <%= favicon_link_tag asset_path('blackandorange-favicon-192x192.png') %>
   </head>
 
   <body>
@@ -25,7 +26,7 @@
     <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <%= link_to root_path, class: "navbar-item" do %>
-          <%= image_tag 'black-and-orange-logo.svg', alt: 'Black & Orange' %>
+          <%= image_tag 'blackandorange-logo-1000x120.svg', alt: 'Black & Orange' %>
         <% end %>
         <div class="navbar-burger burger" data-target="navbar">
           <span></span>
