@@ -7,7 +7,7 @@ services:
         USER_ID: "${USER_ID:-1000}"
         GROUP_ID: "${GROUP_ID:-1000}"
     ports:
-      - "3015:3000"
+      - "3014:3000"
     volumes: 
       - ./blackandorange:/opt/app
       - gem_cache_blackandorange:/gems
@@ -26,7 +26,7 @@ services:
         GROUP_ID: "${GROUP_ID:-1000}"
     command: ./bin/webpack-dev-server
     ports: 
-      - "3050:3050"
+      - "4014:4014"
     volumes: 
       - ./blackandorange:/opt/app
       - gem_cache_blackandorange:/gems
