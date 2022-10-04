@@ -8,7 +8,7 @@ in package.json
     "webpack-cli": "^3.3.12"  
   "devDependencies": {  
     "webpack-dev-server": "^3"  
-  }
+  }  
 docker-compose run --rm web_blackandorange yarn add webpack-cli  
 docker-compose run --rm web_blackandorange yarn install  
 docker-compose run --rm web_blackandorange yarn upgrade  
