@@ -1,0 +1,58 @@
+version: "3"
+services:
+  web_blackandorange_jenkins:
+    build:
+      context: .
+      args:
+        USER_ID: "${USER_ID:-1000}"
+        GROUP_ID: "${GROUP_ID:-1000}"
+    ports:
+      - "13003:3000"
+    volumes: 
+      - ./blackandorange:/opt/app
+      - gem_cache_blackandorange_jenkins:/gems
+    env_file: 
+      - .env/jenkins/database_blackandorange
+      - .env/jenkins/web_blackandorange
+    environment: 
+      - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server_blackandorange_jenkins
+    networks:
+      - network_blackandorange_jenkins
+    stdin_open: true
+    tty: true
+  webpack_dev_server_blackandorange_jenkins:
+    build:
+      context: .
+      args:
+        USER_ID: "${USER_ID:-1000}"
+        GROUP_ID: "${GROUP_ID:-1000}"
+    command: ./bin/webpack-dev-server
+    ports: 
+      - "14003:4014"
+    volumes: 
+      - ./blackandorange:/opt/app
+      - gem_cache_blackandorange_jenkins:/gems
+    env_file: 
+      - .env/jenkins/database_blackandorange
+      - .env/jenkins/web_blackandorange
+    environment: 
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+    networks:
+      - network_blackandorange_jenkins
+  database_blackandorange_jenkins:
+    image: postgres:13
+    env_file: 
+      - .env/jenkins/database_blackandorange
+    volumes: 
+      - db_data_blackandorange_jenkins:/var/lib/postgresql/data
+    networks:
+      - network_blackandorange_jenkins
+volumes: 
+  db_data_blackandorange_jenkins:
+  gem_cache_blackandorange_jenkins:
+networks:
+  network_blackandorange_jenkins:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.11.3.0/24"
