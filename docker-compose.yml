@@ -7,7 +7,7 @@ services:
         USER_ID: "${USER_ID:-1000}"
         GROUP_ID: "${GROUP_ID:-1000}"
     ports:
-      - "3014:3000"
+      - "3003:3000"
     volumes: 
       - ./blackandorange:/opt/app
       - gem_cache_blackandorange:/gems
@@ -17,7 +17,7 @@ services:
     environment: 
       - WEBPACKER_DEV_SERVER_HOST=webpack_dev_server_blackandorange
     networks:
-      - network
+      - network_blackandorange
   webpack_dev_server_blackandorange:
     build:
       context: .
@@ -26,7 +26,7 @@ services:
         GROUP_ID: "${GROUP_ID:-1000}"
     command: ./bin/webpack-dev-server
     ports: 
-      - "4014:4014"
+      - "4003:4014"
     volumes: 
       - ./blackandorange:/opt/app
       - gem_cache_blackandorange:/gems
@@ -36,17 +36,21 @@ services:
     environment: 
       - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
     networks:
-      - network
+      - network_blackandorange
   database_blackandorange:
-    image: postgres
+    image: postgres:13
     env_file: 
       - .env/development/database_blackandorange
     volumes: 
       - db_data_blackandorange:/var/lib/postgresql/data
     networks:
-      - network
+      - network_blackandorange
 volumes: 
   db_data_blackandorange:
   gem_cache_blackandorange:
 networks:
-  network:
+  network_blackandorange:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.10.3.0/24"
